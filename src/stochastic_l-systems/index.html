@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Stochastic L-Systems</title>
+	<LINK REL=STYLESHEET TYPE="text/css" HREF="style.css">
+
+</head>
+<body>
+
+	<h1>Stochastic trees by L-System</h1>
+	<div align="center" id="hl"<h1>L-System sentence:</h1></div>
+	<canvas id="canvas" width="600" height="600"></canvas>
+	<div align="left" id="textresult"></div>
+	<form name="fAuto">
+	<div align="left" id="lblauto"><strong>Animation:</strong></div>
+	<div align="left" id="lblinter">Interval(ms):</div>
+	<input type="text" id="textauto" name = "textauto" value=2 size="4" maxlength="4">
+	<input type="button" value="Start" id = "btnsubmit" onClick="btn1Click()">
+	</form>
+	<form name="fIter">
+	<div align="left" id="lbliter"><strong>Number of iterations:</strong></div>
+	<input type="text" id="textiter" name = "textname" value=5 size="4" maxlength="1">
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+	<form name="fTrans">
+	<div align="left" id="lbltrans"><strong>Enable depth/transparency:</strong></div>
+	<input type="checkbox" checked id="cbtrans" onclick="btnClick()">
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+	<form name="fTrcolor">
+	<div align="left" id="lbltrcolor"><strong>Tree color:</strong></div>	
+	<input type="color" id="favcolor" value="#371D04">
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+	<form name="fBcolor">
+	<div align="left" id="lblbcolor"><strong>Background:</strong></div>	
+	<input type="color" id="bcolor" value="#90C1EC">
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+	<form name="fLen">
+	<div align="left" id="lbllen"><strong>Initial length:</strong></div>	
+	<input id="numlen" type="number" name = "textlen" value=80>
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+	<form name="fStroke">
+	<div align="left" id="lblstr"><strong>Initial stroke:</strong></div>	
+	<input id="numstr" type="number" name = "textstr" value=13>
+	<input type="button" value="Generate" id = "btnIter" onClick="btnClick()">
+	</form>
+
+	<script>
+	function btnClick()
+        {
+		    var color = "";
+            var Txt1 = "";
+			var Txt2 = "";
+			var Txt3 = "";
+			var Txt4 = "";
+            Txt1 = document.fIter.textname.value;
+			Txt2 = document.fAuto.textauto.value;
+			Txt3 = document.fLen.textlen.value;
+			Txt4 = document.fStroke.textstr.value;
+			color = document.getElementById('favcolor').value;
+			bgcolor = document.getElementById('bcolor').value;
+			num = Number.parseInt(Txt1);
+			num = num + 1;
+			var interval = Number.parseInt(Txt2); 
+			document.body.style.backgroundColor = bgcolor;
+					
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext("2d");
+		ctx.strokeStyle = color;
+		var linelength = Txt3;
+		var linewidth = Txt4;
+
+		var tree = new LSystem({
+		productions: {
+        'X': { successors: [
+            { weight: 0.7, successor: 'FFF-[[X]+X]+F[+FX]-X' },
+            { weight: 0.3, successor: 'FF-[X+]+FF[-FX]-XF' }
+        ]},
+        'F': { successors: [
+            { weight: 0.8, successor:  'F' },
+            { weight: 0.17, successor: 'FF' },
+            { weight: 0.03, successor: 'FF+' }
+        ]}
+		},
+		finals: {
+        'F': () => {
+        ctx.lineWidth += (Math.random() - 0.5) / 100;
+		ctx.beginPath()
+		ctx.moveTo(0, 0)
+		ctx.lineTo(0, linelength / (tree.iterations + 1))
+		ctx.stroke()
+		ctx.translate(0, (linelength / (tree.iterations + 1)) - 1.5)
+		},
+		'+': () => { ctx.rotate((Math.PI / 180) * 22.5) },
+		'-': () => { ctx.rotate((Math.PI / 180) * -22.5) },
+		'[': () => {
+		ctx.save();
+		ctx.lineWidth*=0.65;
+		var chkBox = document.getElementById('cbtrans');
+		if (chkBox.checked)
+		{
+        ctx.globalAlpha *= Math.random() * (1.0 - 0.7) + 0.7;
+        }
+        else {
+        ctx.globalAlpha = 1;
+		}
+		linelength -= 10;
+		},
+		']': () => {
+		ctx.restore();
+		ctx.lineWidth*=0.9;
+		linelength += 10;
+		}
+		}
+		})
+
+		function draw() {
+
+		tree.setAxiom('X');
+        tree.iterate(num);
+		document.getElementById('textresult').innerHTML = tree.getString();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.translate(canvas.width / 2, canvas.height / 1.4);
+		ctx.rotate(Math.PI);
+		ctx.lineWidth = linewidth;
+		tree.final();
+		}
+
+		draw();			
+    }	
+	</script>
+	<script>
+	function btn1Click()
+        {
+            var Txt1 = "";
+			var Txt2 = "";
+            Txt1 = document.fIter.textname.value;
+			Txt2 = document.fAuto.textauto.value;
+            num = Number.parseInt(Txt1);
+			num = num + 1;
+			var interval = Number.parseInt(Txt2); 
+		
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext("2d");
+		ctx.strokeStyle = 'rgb(55, 29, 4)';
+		var linelength = 80;
+		var linewidth = linelength/6;
+
+		var tree = new LSystem({
+		productions: {
+        'X': { successors: [
+            { weight: 0.7, successor: 'FFF-[[X]+X]+F[+FX]-X' },
+            { weight: 0.3, successor: 'FF-[X+]+FF[-FX]-XF' }
+        ]},
+        'F': { successors: [
+            { weight: 0.8, successor:  'F' },
+            { weight: 0.17, successor: 'FF' },
+            { weight: 0.03, successor: 'FF+' }
+        ]}
+		},
+		finals: {
+        'F': () => {
+        ctx.lineWidth += (Math.random() - 0.5) / 100;
+		ctx.beginPath()
+		ctx.moveTo(0, 0)
+		ctx.lineTo(0, linelength / (tree.iterations + 1))
+		ctx.stroke()
+		ctx.translate(0, (linelength / (tree.iterations + 1)) - 1.5)
+		},
+		'+': () => { ctx.rotate((Math.PI / 180) * 22.5) },
+		'-': () => { ctx.rotate((Math.PI / 180) * -22.5) },
+		'[': () => {
+		ctx.save();
+		ctx.lineWidth*=0.65;
+		var chkBox = document.getElementById('cbtrans');
+		if (chkBox.checked)
+		{
+        ctx.globalAlpha *= Math.random() * (1.0 - 0.7) + 0.7;
+        }
+        else {
+        ctx.globalAlpha = 1;
+		}
+		linelength -= 10;
+		},
+		']': () => {
+		ctx.restore();
+		ctx.lineWidth*=0.9;
+		linelength += 10;
+		}
+		}
+		})
+
+		function draw() {
+
+		tree.setAxiom('X');
+        tree.iterate(num);
+		document.getElementById('textresult').innerHTML = tree.getString();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.translate(canvas.width / 2, canvas.height / 1.4);
+		ctx.rotate(Math.PI);
+		ctx.lineWidth = linewidth;
+		tree.final();
+		}
+
+		draw();		
+		window.setInterval(() => {window.requestAnimationFrame(draw)}, interval);		
+        }
+	</script>
+	<script src="lindenmayer.js"></script>
+	<script type="text/javascript">
+	
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext("2d");
+ctx.strokeStyle = 'rgb(55, 29, 4)';
+var linelength = 80;
+var linewidth = linelength/6;
+
+var tree = new LSystem({
+    productions: {
+        'X': { successors: [
+            { weight: 0.7, successor: 'FFF-[[X]+X]+F[+FX]-X' },
+            { weight: 0.3, successor: 'FF-[X+]+FF[-FX]-XF' }
+        ]},
+        'F': { successors: [
+            { weight: 0.8, successor:  'F' },
+            { weight: 0.17, successor: 'FF' },
+            { weight: 0.03, successor: 'FF+' }
+        ]}
+    },
+    finals: {
+        'F': () => {
+        ctx.lineWidth += (Math.random() - 0.5) / 100;
+ctx.beginPath()
+ctx.moveTo(0, 0)
+ctx.lineTo(0, linelength / (tree.iterations + 1))
+ctx.stroke()
+ctx.translate(0, (linelength / (tree.iterations + 1)) - 1.5)
+},
+'+': () => { ctx.rotate((Math.PI / 180) * 22.5) },
+'-': () => { ctx.rotate((Math.PI / 180) * -22.5) },
+'[': () => {
+    ctx.save();
+    ctx.lineWidth*=0.65;
+    ctx.globalAlpha *= Math.random() * (1.0 - 0.7) + 0.7;
+    linelength -= 10;
+},
+']': () => {
+    ctx.restore();
+    ctx.lineWidth*=0.9;
+    linelength += 10;
+}
+}
+})
+
+function draw() {
+
+    tree.setAxiom('X');
+    tree.iterate(6);
+    document.getElementById('textresult').innerHTML = tree.getString();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(canvas.width / 2, canvas.height / 1.4);
+    ctx.rotate(Math.PI);
+    ctx.lineWidth = linewidth;
+    tree.final();
+}
+
+draw();
+	</script>
+	</body>
+	</html>

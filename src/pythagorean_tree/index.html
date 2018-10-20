@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pythagorean Tree</title>
+		<script>
+			(function () {
+
+				var canvas = null,
+					context = null,
+					size = 0,
+					angle = Math.PI / 4,
+					ratio = Math.sqrt(2) / 2,
+					left = 0,
+					top = 0,
+					iteration = 0,
+					request = null,
+					timer = null;
+
+				function drawStep(step) {
+
+					var red = (128 - (step * 4)).toString(16),
+						green = (64 + (step * 4)).toString(16),
+						blue = '00';
+
+					context.save();
+					context.fillStyle = '#' + red + green + blue;
+					recursiveDraw(step);
+					context.restore();
+				}
+
+				function recursiveDraw(step) {
+
+					if (step === 0) {
+						context.fillRect(0, 0, size, size);
+						context.strokeRect(0, 0, size, size);
+					} else {
+						context.save();
+						context.translate(0, 0);
+						context.scale(ratio, ratio);
+						context.rotate(- angle);
+						context.translate(0, - size);
+						recursiveDraw(step - 1);
+						context.restore();
+						context.save();
+						context.translate(size, 0);
+						context.scale(ratio, ratio);
+						context.rotate(angle);
+						context.translate(- size, - size);
+						recursiveDraw(step - 1);
+						context.restore();
+					}
+				}
+
+				function drawTree() {
+					canvas = document.getElementById('canvas');
+					context = canvas.getContext('2d');
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+					size = Math.min(canvas.width / 6, canvas.height / 4);
+					left = (canvas.width - size) / 2;
+					top = (canvas.height / 2) + size;
+					iteration = 0;
+					context.translate(left, top);
+					clearInterval(timer);
+
+					timer = setInterval(function () {
+						window.cancelAnimationFrame(request);
+						request = window.requestAnimationFrame(function () {
+
+							if (iteration < 20) {
+								drawStep(iteration);
+								iteration++;
+							} else {
+								clearInterval(timer);
+							}
+						});
+					}, 100);
+				}
+				document.addEventListener('DOMContentLoaded', drawTree);
+				window.addEventListener('resize', drawTree);
+			})();
+		</script>
+		<style>
+			html, body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+			#canvas {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+	</body>
+</html>

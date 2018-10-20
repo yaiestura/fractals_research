@@ -1,0 +1,182 @@
+
+body, textarea {
+  background-color: rgb(144, 193, 236);
+}
+
+#textresult{
+  color: black;
+  float: right;
+  width:800px;
+  height:600px;
+  top: 10px;
+  left: 620px;
+  bottom: 0;
+  right: 0;
+}
+
+#lbliter{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 565px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#textiter{
+  position: absolute;
+  float: left;
+  top: 565px;
+  left: 185px;
+  bottom: 0;
+  right: 0;
+  }
+
+#btnIter{
+  position: absolute;
+  top: 700px;
+  left: 175px;
+}
+
+#lbltrans{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 595px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#cbtrans{
+  position: absolute;
+  float: left;
+  top: 595px;
+  left: 206px;
+  bottom: 0;
+  right: 0;
+}
+
+#btnsubmit{
+  position: absolute;
+  top: 530px;
+  left: 244px;
+}
+
+#lblauto{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 530px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#lblinter{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 530px;
+  left: 98px;
+  bottom: 0;
+  right: 0;
+}
+
+#textauto{
+  position: absolute;
+  float: left;
+  top: 530px;
+  left: 185px;
+  bottom: 0;
+  right: 0;
+}
+
+#lbltrcolor{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 625px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#favcolor{
+  position: absolute;
+  top: 623px;
+  left: 100px;
+  bottom: 0;
+  right: 0;
+}
+
+#lblbcolor{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 655px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#bcolor{
+  position: absolute;
+  top: 653px;
+  left: 110px;
+  bottom: 0;
+  right: 0;
+}
+
+#lbllen{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 685px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#numlen {
+  width: 45px;
+  height: 20px;
+  position: absolute;
+  float: left;
+  top: 685px;
+  left: 113px;
+  bottom: 0;
+  right: 0;
+}
+
+#lblstr{
+  color: black;
+  position: absolute;
+  float: left;
+  top: 715px;
+  left: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+#numstr {
+  width: 45px;
+  height: 20px;
+  position: absolute;
+  float: left;
+  top: 715px;
+  left: 113px;
+  bottom: 0;
+  right: 0;
+}
+
+#hl {
+  color: black;
+  font-size: 16pt;
+  position: absolute;
+  top: 50px;
+  left: 700px;
+  bottom: 0;
+  right: 0;
+}
